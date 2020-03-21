@@ -1,0 +1,38 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/common.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+            <main>
+                <% if (offers.length > 0) { %>
+                    <div class="grid">
+                        <% for (let offer of offers) { %>
+                            <article class="card product-item">
+                                <header class="card__header">
+                                    <h1 class="product__title">
+                                        <%= offer.name %>
+                                    </h1>
+                                </header>
+                                <div class="card__content">
+                                    <h2 class="product__price">$
+                                        <%= offer.discount %>
+                                    </h2>
+                                </div>
+                                <div class="card__actions">
+                                    <a href="/admin/edit-offer/<%= offer._id %>?edit=true" class="btn">Edit</a>
+                                    <form action="/admin/delete-offer" method="POST">
+                                        <input type="hidden" value="<%= offer._id %>" name="offerId">
+                                        <button class="btn" type="submit">Delete</button>
+                                    </form>
+
+                                </div>
+                            </article>
+                            <% } %>
+                    </div>
+                    <% } else { %>
+                        <h1>No Offers Found!</h1>
+                        <% } %>
+            </main>
+            <%- include('../includes/end.ejs') %>

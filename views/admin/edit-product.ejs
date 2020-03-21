@@ -1,0 +1,66 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/common.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main style="margin-top: 40px;">
+        <form class="product-form" action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST">
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" value="<% if (editing) { %><%= product.title %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="imageUrl">Image URL</label>
+                <input type="text" name="imageUrl" id="imageUrl" value="<% if (editing) { %><%= product.imageUrl %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="price">Price</label>
+                <input type="number" name="price" id="price" step="0.01" value="<% if (editing) { %><%= product.price %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <%for(i=0; i<categories.length; i++){%>
+                        <% if (editing) { %>
+                            <% if (product.categories === categories[i]._id) { %>
+                                <option selected value="<%= categories[i]._id%>"><%= categories[i].name %></option>
+                            <% } else { %>
+                                <option value="<%= categories[i]._id%>"><%= categories[i].name %></option>
+                            <% } %>
+                        <% } else { %>
+                            <option value="<%= categories[i]._id%>"><%= categories[i].name %></option>
+                        <% } %>
+                    <%}%>
+                </select>
+            </div>
+            <div class="form-control">
+                <label for="offer">Offer</label>
+                <select id="offer" name="offer">
+                    <%for(i=0; i<offers.length; i++){%>
+                        <% if (editing) { %>
+                            <% if (product.offer === offers[i]._id) { %>
+                                <option selected value="<%= offers[i]._id%>"><%= offers[i].name %> (<%= offers[i].discount %>$ discount)</option>
+                            <% } else { %>
+                                <option value="<%= offers[i]._id%>"><%= offers[i].name %> (<%= offers[i].discount %>$ discount)</option>
+                            <% } %>
+                        <% } else { %>
+                            <option value="<%= offers[i]._id%>"><%= offers[i].name %> (<%= offers[i].discount %>$ discount)</option>
+                        <% } %>
+                    <%}%>
+                </select>
+            </div>
+            <div class="form-control">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" rows="5"><% if (editing) { %><%= product.description %><% } %></textarea>
+            </div>
+            <% if (editing) { %>
+                <input type="hidden" value="<%= product._id %>" name="productId">
+            <% } %>
+
+            <button  class="btn" type="submit"><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>
